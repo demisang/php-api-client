@@ -82,6 +82,8 @@ class Request
 
         $curl = curl_init($this->getFullUrl());
         curl_setopt($curl, CURLOPT_HTTPHEADER, $this->getFullHeaders());
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLOPT_VERBOSE, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->timeout !== null ? $this->timeout : $this->client->timeout);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);

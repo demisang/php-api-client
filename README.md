@@ -31,7 +31,7 @@ $request = $client->post('users')
     ->setFormData('password', '12345') // Single POST param
     ->setFormData(['email' => 'example@com', 'location' => 'London']) // POST params array
     ->setHeaderData('Connection', 'Keep-Alive') // Header value
-    ->setHeaderData(['Accept' => 'image/gif', 'Content-type' => 'application/x-www-form-urlencoded;charset=UTF-8']); // Headers array
+    ->setHeaderData(['Accept' => 'image/gif', 'Some-Custom' => 'value']); // Headers array
 
 // Resets
 $request->query = []; // Reset query params

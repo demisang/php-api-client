@@ -58,10 +58,47 @@ class Response
     {
         $curl = $this->curlHandler;
 
-        $this->body = curl_exec($curl);
+        $response = curl_exec($curl);
+
+        // Detect headers and body content
+        $headerSize = curl_getinfo($this->curlHandler, CURLINFO_HEADER_SIZE);
+        $this->headers = $this->parseHeaders(substr($response, 0, $headerSize));
+//        var_dump($this->headers);
+        $this->body = substr($response, $headerSize);
+//        var_dump($this->body);
+//        die;
+
         $this->statusCode = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $this->statusCode = ''; // @todo http://php.net/manual/ru/function.curl-getinfo.php#41332
+        $this->statusMessage = ''; // @todo http://php.net/manual/ru/function.curl-getinfo.php#41332
+
         curl_close($curl);
+    }
+
+    /**
+     * Headers text
+     *
+     * @param string $headersLine
+     *
+     * @return array
+     */
+    protected function parseHeaders($headersLine)
+    {
+        if (empty($headersLine)) {
+            return [];
+        }
+
+        $headers = [];
+        $lines = explode(PHP_EOL, $headersLine);
+        foreach ($lines as $line) {
+            $parts = explode(':', $line);
+            if (count($parts) !== 2) {
+                continue;
+            }
+
+            $headers[$parts[0]] = ltrim($parts[1]);
+        }
+
+        return $headers;
     }
 
     /**
