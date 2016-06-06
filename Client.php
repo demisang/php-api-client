@@ -9,7 +9,8 @@ class Client
 {
     public $baseUri;
     public $timeout = 30;
-    public $headers = [];
+    public $defaultHeaders = [];
+    public $defaultQueryParams = [];
 
     public function __construct(Array $config = [])
     {
@@ -21,67 +22,67 @@ class Client
     }
 
     /**
-     * Create new API call
+     * Create new API request
      *
      * @param string $url
      * @param string $method
      *
-     * @return \demi\api\Call
+     * @return \demi\api\Request
      */
-    public function apiCall($url, $method = Call::METHOD_GET)
+    public function apiRequest($url, $method = Request::METHOD_GET)
     {
-        $call = new Call($this);
-        $call->method = $method;
-        $call->url = $url;
+        $request = new Request($this);
+        $request->method = $method;
+        $request->url = $url;
 
-        return $call;
+        return $request;
     }
 
     /**
-     * Create new GET api call
+     * Create new GET api request
      *
      * @param string $url
      *
-     * @return \demi\api\Call
+     * @return \demi\api\Request
      */
     public function get($url)
     {
-        return $this->apiCall($url, Call::METHOD_GET);
+        return $this->apiRequest($url, Request::METHOD_GET);
     }
 
     /**
-     * Create new POST api call
+     * Create new POST api request
      *
      * @param string $url
      *
-     * @return \demi\api\Call
+     * @return \demi\api\Request
      */
     public function post($url)
     {
-        return $this->apiCall($url, Call::METHOD_POST);
+        return $this->apiRequest($url, Request::METHOD_POST);
     }
 
     /**
-     * Create new PUT api call
+     * Create new PUT api request
      *
      * @param string $url
      *
-     * @return \demi\api\Call
+     * @return \demi\api\Request
      */
     public function put($url)
     {
-        return $this->apiCall($url, Call::METHOD_PUT);
+        return $this->apiRequest($url, Request::METHOD_PUT);
     }
 
     /**
-     * Create new DELETE api call
+     * Create new DELETE api request
      *
      * @param string $url
      *
-     * @return \demi\api\Call
+     * @return \demi\api\Request
      */
     public function delete($url)
     {
-        return $this->apiCall($url, Call::METHOD_DELETE);
+        return $this->apiRequest($url, Request::METHOD_DELETE);
     }
 }
