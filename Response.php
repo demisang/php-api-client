@@ -38,6 +38,12 @@ class Response
      * @var resource
      */
     protected $curlHandler;
+    /**
+     * Curl last error
+     *
+     * @var string
+     */
+    protected $curlError;
 
     /**
      * Response constructor.
@@ -70,6 +76,10 @@ class Response
 
         $this->statusCode = (int)curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $this->statusMessage = ''; // @todo http://php.net/manual/ru/function.curl-getinfo.php#41332
+
+        if ($this->body === false) {
+            $this->curlError = curl_error($curl);
+        }
 
         curl_close($curl);
     }
@@ -113,7 +123,7 @@ class Response
         $content = $this->body;
 
         if ($asJson) {
-            json_decode($content, true);
+            $content = json_decode($content, true);
         }
 
         return $content;
@@ -170,5 +180,15 @@ class Response
     public function statusMessage()
     {
         return $this->statusMessage;
+    }
+
+    /**
+     * Get curl last error
+     *
+     * @return string
+     */
+    public function curlError()
+    {
+        return $this->curlError;
     }
 }
