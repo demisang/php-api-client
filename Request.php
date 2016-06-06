@@ -44,7 +44,7 @@ class Request
      *
      * @var array
      */
-    public $query = [];
+    public $queryParams = [];
     /**
      * Form (POST|PUT|DELETE) params
      *
@@ -56,7 +56,7 @@ class Request
      *
      * @var array
      */
-    public $headers = [];
+    public $headerParams = [];
     /**
      * Timeout connection seconds
      *
@@ -77,7 +77,7 @@ class Request
     public function send()
     {
         if ($this->method == static::METHOD_PUT) {
-            $this->headers['X-HTTP-Method-Override'] = 'PUT';
+            $this->headerParams['X-HTTP-Method-Override'] = 'PUT';
         }
 
         $curl = curl_init($this->getFullUrl());
@@ -114,13 +114,13 @@ class Request
     }
 
     /**
-     * Get full query(GET) params
+     * Get full queryParams(GET) params
      *
      * @return array
      */
     protected function getFullQuery()
     {
-        return array_merge($this->client->defaultQueryParams, $this->query);
+        return array_merge($this->client->defaultQueryParams, $this->queryParams);
     }
 
     /**
@@ -133,14 +133,23 @@ class Request
      */
     protected function getFullUrl()
     {
-        if (substr($this->url, 0, 1) === '/') {
+        if (substr($this->url, 0, 7) === 'http://' || substr($this->url, 0, 8) === 'https://') {
+            // http(s)://
             $url = $this->url;
+        } elseif (substr($this->url, 0, 1) === '/') {
+            // relative host
+            $uriParts = parse_url($this->client->baseUri);
+            if (!isset($uriParts['host'])) {
+                $url = $this->url;
+            } else {
+                $url = (isset($uriParts['scheme']) ? $uriParts['scheme'] : 'http') . '://' . ltrim($this->url, '/');
+            }
         } else {
             $url = rtrim($this->client->baseUri, '/') . '/' . $this->url;
         }
 
-        // Prepare full url string with query(GET) params
-        return rtrim(rtrim($url, '?') . http_build_query($this->query), '?');
+        // Prepare full url string with queryParams(GET) params
+        return rtrim(rtrim($url, '?') . '?' . http_build_query($this->queryParams), '?');
     }
 
     /**
@@ -152,7 +161,7 @@ class Request
      */
     protected function getFullHeaders()
     {
-        $headers = array_merge($this->client->defaultHeaders, $this->headers);
+        $headers = array_merge($this->client->defaultHeaders, $this->headerParams);
 
         $buffer = [];
         foreach ($headers as $key => $value) {
@@ -163,7 +172,7 @@ class Request
     }
 
     /**
-     * Set query param(s)
+     * Set queryParams param(s)
      *
      * @param string|array $name Param name or Params array
      * @param string $value
@@ -177,7 +186,7 @@ class Request
                 $this->setQueryParam($k, $v);
             }
         } else {
-            $this->query[$name] = $value;
+            $this->queryParams[$name] = $value;
         }
 
         return $this;
@@ -191,11 +200,11 @@ class Request
      *
      * @return $this
      */
-    public function setFormData($name, $value = null)
+    public function setPostParam($name, $value = null)
     {
         if (is_array($name)) {
             foreach ($name as $k => $v) {
-                $this->setFormData($k, $v);
+                $this->setPostParam($k, $v);
             }
         } else {
             $this->formParams[$name] = $value;
@@ -212,14 +221,14 @@ class Request
      *
      * @return $this
      */
-    public function setHeaderData($name, $value = null)
+    public function setHeaderParam($name, $value = null)
     {
         if (is_array($name)) {
             foreach ($name as $k => $v) {
-                $this->setHeaderData($k, $v);
+                $this->setHeaderParam($k, $v);
             }
         } else {
-            $this->headers[$name] = $value;
+            $this->headerParams[$name] = $value;
         }
 
         return $this;

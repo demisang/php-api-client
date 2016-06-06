@@ -24,19 +24,22 @@ $client = new \demi\api\Client([
     'defaultQueryParams' => [],
 ]);
 
+// Simple example: get index page content
+$content = $client->get('http://example.com/index.php')->send()->body();
+
 // Make request to baseUri + 'users'
 $request = $client->post('users')
     ->setQueryParam('id', 123) // Single param
     ->setQueryParam(['name' => 'Jack', 'company' => 'Google']) // Params array
-    ->setFormData('password', '12345') // Single POST param
-    ->setFormData(['email' => 'example@com', 'location' => 'London']) // POST params array
-    ->setHeaderData('Connection', 'Keep-Alive') // Header value
-    ->setHeaderData(['Accept' => 'image/gif', 'Some-Custom' => 'value']); // Headers array
+    ->setPostParam('password', '12345') // Single POST param
+    ->setPostParam(['email' => 'example@com', 'location' => 'London']) // POST params array
+    ->setHeaderParam('Connection', 'Keep-Alive') // Header value
+    ->setHeaderParam(['Accept' => 'image/gif', 'Some-Custom' => 'value']); // Headers array
 
 // Resets
-$request->query = []; // Reset query params
-$request->formParams = []; // Reset form params
-$request->headers = []; // Reset headers
+$request->queryParams = []; // Reset query params
+$request->formParams = []; // Reset post params
+$request->headerParams = []; // Reser headers
 
 // Submit request and get Response object
 $response = $request->send();
@@ -45,7 +48,7 @@ $response = $request->send();
 $statusCode = $response->statusCode(); // Response code: 200, 201, 204, etc...
 $bodyText = $response->body(); // Content
 $bodyJson = $response->json(); // Json decoded content
-$headers = $response->headers(); // Headers array
+$headerParams = $response->headers(); // Headers array
 $headerValue = $response->headerValue('Encoding', 'Default value'); // Some header value
 ```
 

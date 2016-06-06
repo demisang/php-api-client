@@ -60,10 +60,10 @@ class Response
 
         $response = curl_exec($curl);
 
-        // Detect headers and body content
+        // Detect headerParams and body content
         $headerSize = curl_getinfo($this->curlHandler, CURLINFO_HEADER_SIZE);
         $this->headers = $this->parseHeaders(substr($response, 0, $headerSize));
-//        var_dump($this->headers);
+//        var_dump($this->headerParams);
         $this->body = substr($response, $headerSize);
 //        var_dump($this->body);
 //        die;
