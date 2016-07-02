@@ -44,6 +44,15 @@ $request->headerParams = []; // Reser headers
 // Submit request and get Response object
 $response = $request->send();
 
+
+// Without client instance
+// As static class
+$response = \demi\api\ApiRequest::get('http://example.com/index.php');
+$response = \demi\api\ApiRequest::post('http://example.com/index.php');
+$response = \demi\api\ApiRequest::put('http://example.com/index.php');
+$response = \demi\api\ApiRequest::delete('http://example.com/index.php');
+
+
 // Response attributes
 $statusCode = $response->statusCode(); // Response code: 200, 201, 204, etc...
 $bodyText = $response->body(); // Content
@@ -51,5 +60,3 @@ $bodyJson = $response->json(); // Json decoded content
 $headerParams = $response->headers(); // Headers array
 $headerValue = $response->headerValue('Encoding', 'Default value'); // Some header value
 ```
-
-### As static
