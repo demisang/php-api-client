@@ -149,7 +149,7 @@ class Request
         }
 
         // Prepare full url string with queryParams(GET) params
-        return rtrim(rtrim($url, '?') . '?' . http_build_query($this->queryParams), '?');
+        return rtrim(rtrim($url, '?') . '?' . http_build_query($this->getFullQuery()), '?');
     }
 
     /**
