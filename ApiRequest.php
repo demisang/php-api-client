@@ -26,6 +26,7 @@ class ApiRequest
 
         return $client->$method($url)
             ->setQueryParam($queryParams)
+            ->setPostParam($postParams)
             ->setHeaderParam($headerParams)
             ->send();
     }
