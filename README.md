@@ -10,7 +10,6 @@ Run:
 composer require "demi/php-api-client" "~1.0"
 ```
 
-
 Usage
 -----
 ### As client

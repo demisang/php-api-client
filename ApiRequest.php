@@ -1,4 +1,10 @@
 <?php
+/**
+ * @copyright Copyright (c) 2018 Ivan Orlov
+ * @license   https://github.com/demisang/php-api-client/blob/master/LICENSE
+ * @link      https://github.com/demisang/php-api-client#readme
+ * @author    Ivan Orlov <gnasimed@gmail.com>
+ */
 
 namespace demi\api;
 

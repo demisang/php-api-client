@@ -1,19 +1,14 @@
 {
     "name": "demi/php-api-client",
     "description": "PHP lib for making API calls",
-    "keywords": [
-        "php",
-        "API",
-        "calls",
-        "client"
-    ],
+    "keywords": ["php", "API", "calls", "client"],
     "homepage": "https://github.com/demisang/php-api-client#readme",
     "type": "library",
-    "license": "GNU",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Ivan Orlov",
-            "email": "orlov_mail@mail.ru",
+            "email": "gnasimed@gmail.com",
             "homepage": "https://orlov.io/",
             "role": "Creator"
         }
