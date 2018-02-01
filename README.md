@@ -42,17 +42,21 @@ $request->headerParams = []; // Reser headers
 
 // Submit request and get Response object
 $response = $request->send();
+```
 
+### Without client instance
+```php
+<?php
 
-// Without client instance
-// As static class
+// Static calls
 $response = \demi\api\ApiRequest::get('http://example.com/index.php');
 $response = \demi\api\ApiRequest::post('http://example.com/index.php');
 $response = \demi\api\ApiRequest::put('http://example.com/index.php');
 $response = \demi\api\ApiRequest::delete('http://example.com/index.php');
+```
 
-
-// Response attributes
+### Response info
+```php
 $statusCode = $response->statusCode(); // Response code: 200, 201, 204, etc...
 $bodyText = $response->body(); // Content
 $bodyJson = $response->json(); // Json decoded content
